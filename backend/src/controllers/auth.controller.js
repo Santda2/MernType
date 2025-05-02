@@ -1,6 +1,8 @@
+import { imagekit } from "../lib/imagekit.js"
 import { generateToken } from "../lib/utils.js"
 import User from "../models/user.model.js"
 import bcrypt from "bcryptjs"
+
 
 export const signup = async (req,res)=>{
     const {fullName,email,password} = req.body
@@ -84,3 +86,31 @@ export const logout = (req,res)=>{
         res.status(500).json({message:"Internal Server error"})
     }
 }  
+
+export const updateProfile = async (req,res)=>{
+    try {
+        const {profilePic} = req.body
+        const userId = req.user._id
+        if (!profilePic){
+            return res.status(400).json({message:"Profile pic is required"})
+        }
+        
+        //!TODO 
+        const updatedUser = await User.findByIdAndUpdate(userId,{profilePic:uploadResponse.url},{new:true})
+
+        res.status(200).json(updatedUser)
+
+    } catch (error) {
+        console.log("Error in update profile",error.message)
+        res.status(500).json({message:"Internal Server error"})
+    }
+}
+
+export const checkAuth = async (req,res)=>{
+    try {
+        res.status(200).json(req.user)
+    } catch (error) {
+        console.log("Error in checkAuth controller"+error.message)
+        res.status(500).json({message:"Internal server error"})
+    }
+}
