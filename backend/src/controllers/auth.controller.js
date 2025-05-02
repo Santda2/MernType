@@ -95,7 +95,11 @@ export const updateProfile = async (req,res)=>{
             return res.status(400).json({message:"Profile pic is required"})
         }
         
-        //!TODO 
+        //will be storing a seed that generetes a svg from dicebear/avatars
+        /*
+        ill be set amount of seed meaning a set amount of profiles from which one will me choosen in front
+        and sent here, later ill experiment wich seed are proper
+         */
         const updatedUser = await User.findByIdAndUpdate(userId,{profilePic:uploadResponse.url},{new:true})
 
         res.status(200).json(updatedUser)
