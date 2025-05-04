@@ -1,4 +1,3 @@
-import { imagekit } from "../lib/imagekit.js"
 import { generateToken } from "../lib/utils.js"
 import User from "../models/user.model.js"
 import bcrypt from "bcryptjs"
