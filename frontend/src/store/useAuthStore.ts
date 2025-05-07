@@ -9,6 +9,7 @@ interface AuthUser {
   email: string;
   fullName: string;
   profilePic:string;
+  createdAt:any;
   // Add other user properties as needed
 }
 

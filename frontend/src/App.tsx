@@ -9,16 +9,19 @@ import { useAuthStore } from './store/useAuthStore.ts'
 import { Toaster } from 'react-hot-toast'
 import { useEffect } from "react"
 import { ProtectedRoute, UnauthenticatedRoute } from './components/ProtectedRoute';
+import './index.css'
+import { useThemeStore } from "./store/useThemeStore.ts"
 
 export const App = () => {
   const { checkAuth } = useAuthStore()
+  const {theme}=useThemeStore()
 
   useEffect(() => {
     checkAuth()
   }, [checkAuth])
 
   return (
-    <div>
+    <div data-theme={theme}>
       <Navbar/>
       <Routes>
         {/* Protected Routes */}
@@ -34,11 +37,7 @@ export const App = () => {
           </ProtectedRoute>
         }/>
 
-        <Route path='/settings' element={
-          <ProtectedRoute>
-            <SettingsPage/>
-          </ProtectedRoute>
-        }/>
+        <Route path="/settings" element={<SettingsPage />} />
 
         {/* Unauthenticated Routes */}
         <Route path='/login' element={
