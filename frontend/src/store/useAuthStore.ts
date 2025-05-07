@@ -7,7 +7,8 @@ interface AuthUser {
   // Define your user type here based on what your API returns
   id: string;
   email: string;
-  name?: string;
+  fullName: string;
+  profilePic:string;
   // Add other user properties as needed
 }
 
@@ -22,6 +23,7 @@ interface AuthStore {
   signup: (data: SignupData) => Promise<void>;
   logout: () => Promise<void>;
   login: (data:LoginData) => Promise<void>;
+  updateProfile: (data:string) => Promise<void>;
 }
 interface LoginData{
   email:string,
@@ -88,7 +90,26 @@ export const useAuthStore = create<AuthStore>((set) => ({
     }finally{
       set({isLoggingIn:false})
     }
+  },
+  updateProfile: async (profilePic: string) => { // Accept explicit string parameter
+    set({ isUpdatingProfile: true });
+    try {
+      const res = await axiosInstance.put("/auth/update-profile", 
+        { profilePic }, // Send as JSON object
+        {
+          headers: {
+            "Content-Type": "application/json" // Explicitly set JSON
+          }
+        }
+      );
+      set({ authUser: res.data });
+      toast.success("Profile updated successfully");
+    } catch (error) {
+      console.log("Error in updating profile", error);
+      toast.error("Something went wrong");
+    } finally {
+      set({ isUpdatingProfile: false });
+    }
   }
-
   
 }));

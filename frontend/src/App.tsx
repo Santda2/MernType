@@ -1,4 +1,3 @@
-import React, { useEffect } from 'react'
 import Navbar from "./components/Navbar.tsx"
 import { Routes, Route, Navigate } from 'react-router-dom'
 import HomePage from './pages/HomePage.tsx'
@@ -6,39 +5,60 @@ import SignUpPage from './pages/SignUpPage.tsx'
 import LoginPage from './pages/LoginPage.tsx'
 import SettingsPage from './pages/SettingsPage.tsx'
 import ProfilePage from './pages/ProfilePage.tsx'
-import { axiosInstance } from './lib/axios.ts'
 import { useAuthStore } from './store/useAuthStore.ts'
-import { Loader } from "lucide-react"
 import { Toaster } from 'react-hot-toast'
+import { useEffect } from "react"
+import { ProtectedRoute, UnauthenticatedRoute } from './components/ProtectedRoute';
 
 export const App = () => {
-  const {authUser,checkAuth,isCheckingAuth} = useAuthStore()
+  const { checkAuth } = useAuthStore()
 
-  useEffect(()=>{
+  useEffect(() => {
     checkAuth()
-  },[checkAuth])
+  }, [checkAuth])
 
-  console.log({authUser})
-  
-  if (isCheckingAuth && !authUser){
-    return (
-      <div className="flex items-center justify-center h-screen">
-        <Loader className="size-10 animate-spin"></Loader>
-      </div>
-    )
-  }
   return (
     <div>
       <Navbar/>
       <Routes>
-        <Route path='/' element={authUser? <HomePage/>:<Navigate to="/login" />}/>
-        <Route path='/signup' element={!authUser?<SignUpPage/>:<Navigate to="/" /> }/>
-        <Route path='/login' element={!authUser?<LoginPage/>:<Navigate to="/" />}/>
-        <Route path='/settings' element={<SettingsPage/>}/>
-        <Route path='/profile' element={authUser?<ProfilePage/>:<Navigate to="/login" />}/>
+        {/* Protected Routes */}
+        <Route path='/' element={
+          <ProtectedRoute>
+            <HomePage/>
+          </ProtectedRoute>
+        }/>
+        
+        <Route path='/profile' element={
+          <ProtectedRoute>
+            <ProfilePage/>
+          </ProtectedRoute>
+        }/>
+
+        <Route path='/settings' element={
+          <ProtectedRoute>
+            <SettingsPage/>
+          </ProtectedRoute>
+        }/>
+
+        {/* Unauthenticated Routes */}
+        <Route path='/login' element={
+          <UnauthenticatedRoute>
+            <LoginPage/>
+          </UnauthenticatedRoute>
+        }/>
+
+        <Route path='/signup' element={
+          <UnauthenticatedRoute>
+            <SignUpPage/>
+          </UnauthenticatedRoute>
+        }/>
+
+        {/* Fallback redirect */}
+        <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
       <Toaster/>
     </div>
   )
 }
+
 export default App

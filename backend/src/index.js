@@ -15,10 +15,12 @@ app.use(express.json())
 app.use(cookieParser())
 app.use(cors({
     origin:"http://localhost:5173",
-    credentials:true
+    credentials:true,
+    methods:["GET","POST","PUT","DELETE"]
 }))
 
 app.use("/api/auth",authRoutes)
+console.log("Registed authRoutes at /api/auth")
 app.use("/api/messages",messageRoutes)
 
 app.listen(PORT,()=>{

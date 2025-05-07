@@ -86,28 +86,22 @@ export const logout = (req,res)=>{
     }
 }  
 
-export const updateProfile = async (req,res)=>{
+export const updateProfile = async (req, res) => {
     try {
-        const {profilePic} = req.body
-        const userId = req.user._id
-        if (!profilePic){
-            return res.status(400).json({message:"Profile pic is required"})
-        }
-        
-        //will be storing a seed that generetes a svg from dicebear/avatars
-        /*
-        ill be set amount of seed meaning a set amount of profiles from which one will me choosen in front
-        and sent here, later ill experiment wich seed are proper
-         */
-        const updatedUser = await User.findByIdAndUpdate(userId,{profilePic:uploadResponse.url},{new:true})
+      const { profilePic } = req.body;
+      const userId = req.user._id;
 
-        res.status(200).json(updatedUser)
-
+      const updatedUser = await User.findByIdAndUpdate(
+        userId,
+        { profilePic: profilePic },
+        { new: true, select: "-password" }
+      );
+      res.status(200).json(updatedUser);
     } catch (error) {
-        console.log("Error in update profile",error.message)
-        res.status(500).json({message:"Internal Server error"})
+      console.log("Error in update profile", error.message);
+      res.status(500).json({ message: "Internal Server error" });
     }
-}
+  };
 
 export const checkAuth = async (req,res)=>{
     try {
