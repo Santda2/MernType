@@ -5,11 +5,10 @@ import toast from "react-hot-toast";
 
 interface AuthUser {
   // Define your user type here based on what your API returns
-  id: string;
+  _id: string;
   email: string;
   fullName: string;
   profilePic:string;
-  createdAt:any;
   // Add other user properties as needed
 }
 
@@ -19,6 +18,7 @@ interface AuthStore {
   isLoggingIn: boolean;
   isUpdatingProfile: boolean;
   isCheckingAuth: boolean;
+  onlineUsers:AuthUser[]
   
   checkAuth: () => Promise<void>;
   signup: (data: SignupData) => Promise<void>;
@@ -44,6 +44,7 @@ export const useAuthStore = create<AuthStore>((set) => ({
   isLoggingIn: false,
   isUpdatingProfile: false,
   isCheckingAuth: true,
+  onlineUsers:[],
 
   checkAuth: async () => {
     try {

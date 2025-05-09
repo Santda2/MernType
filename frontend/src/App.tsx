@@ -47,7 +47,7 @@ export const App = () => {
         }/>
 
         <Route path='/signup' element={
-          <UnauthenticatedRoute>
+          <UnauthenticatedRoute>  
             <SignUpPage/>
           </UnauthenticatedRoute>
         }/>
