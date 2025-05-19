@@ -13,12 +13,13 @@ import './index.css'
 import { useThemeStore } from "./store/useThemeStore.ts"
 
 export const App = () => {
-  const { checkAuth } = useAuthStore()
+  const { checkAuth,onlineUsers } = useAuthStore()
   const {theme}=useThemeStore()
 
   useEffect(() => {
     checkAuth()
   }, [checkAuth])
+
 
   return (
     <div data-theme={theme}>
@@ -37,9 +38,10 @@ export const App = () => {
           </ProtectedRoute>
         }/>
 
-        <Route path="/settings" element={<SettingsPage />} />
 
         {/* Unauthenticated Routes */}
+        <Route path="/settings" element={<SettingsPage />} />
+
         <Route path='/login' element={
           <UnauthenticatedRoute>
             <LoginPage/>

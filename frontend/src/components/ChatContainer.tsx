@@ -12,9 +12,7 @@ function ChatContainer() {
 
   useEffect(() => {
     getMessages(selectedUser!._id)
-    for (var m in messages){
-      console.log(m)
-    }
+    console.log(messages)
   }, [selectedUser,getMessages])
 
 
@@ -25,8 +23,6 @@ function ChatContainer() {
       <MessagesInput/>
     </div>
   )
-  
-  
 
   return (
     <div className="flex-1 flex flex-col overflow-auto">
