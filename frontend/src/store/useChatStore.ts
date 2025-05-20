@@ -17,12 +17,12 @@ interface Message {
   text: string;
   createdAt: string; 
   updatedAt: string;
-  __v?: number; 
+  __v?: number; //I mean it has one but never used
 }
 interface ChatStore {
   messages: Message[];
   users: User[];
-  selectedUser: User | null;
+  selectedUser: User | null; //null safety but null checked always
   isUsersLoading: boolean;
   isMessagesLoading: boolean;
   getUsers: () => Promise<void>;
@@ -71,7 +71,6 @@ export const useChatStore = create<ChatStore>((set,get) => ({
     if (!selectedUser) return;
 
     const socket = useAuthStore.getState().socket;
-
     socket.on("newMessage", (newMessage:Message) => {
       const isMessageSentFromSelectedUser = newMessage.senderId === selectedUser._id;
       if (!isMessageSentFromSelectedUser) return;

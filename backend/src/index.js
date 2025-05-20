@@ -10,7 +10,6 @@ import messageRoutes from "./routes/message.route.js"
 import { app,server } from "./lib/socket.js"
 
 dotenv.config()
-app
 const PORT = process.env.PORT
 
 app.use(express.json())
