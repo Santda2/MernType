@@ -18,7 +18,7 @@ export function getReceiverSocketId(userId){
 const userSocketMap = {}
 
 io.on("connection",(socket)=>{
-    console.log("A user conected",socket.id)
+    console.log("A user conected",socket.id) //{userId:socketId} keys are the ids in the Db and values the sockets
 
     const userId = socket.handshake.query.userId;
     if (userId) userSocketMap[userId] = socket.id

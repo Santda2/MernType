@@ -13,7 +13,7 @@ import './index.css'
 import { useThemeStore } from "./store/useThemeStore.ts"
 
 export const App = () => {
-  const { checkAuth,onlineUsers } = useAuthStore()
+  const { checkAuth} = useAuthStore()
   const {theme}=useThemeStore()
 
   useEffect(() => {
