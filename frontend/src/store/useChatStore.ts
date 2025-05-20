@@ -30,6 +30,7 @@ interface ChatStore {
   setSelectedUser:(User:User | null)=>Promise<void>
   sendMessage:(messageData:any)=>Promise<void>
   subscribeToMessages:()=>void
+  unsubscribeToMessages:()=>void
 }
 
 export const useChatStore = create<ChatStore>((set,get) => ({
@@ -75,11 +76,15 @@ export const useChatStore = create<ChatStore>((set,get) => ({
       const isMessageSentFromSelectedUser = newMessage.senderId === selectedUser._id;
       if (!isMessageSentFromSelectedUser) return;
 
-      /*set({
+      set({
         messages: [...get().messages, newMessage],
-      });*/
+      });
     });
-    //TODO UNsubscribe
+  },
+
+  unsubscribeToMessages:()=>{
+    const socket = useAuthStore.getState().socket;
+    socket.off("newMessageP")
   },
 
   sendMessage: async (messageData) => {
